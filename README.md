@@ -15,9 +15,9 @@ No final do curso avançado de Cypress é passado um desafio de como seria testa
 - git versão 2.41.0
 - Vs Code versão 1.80.1
 - Npm versão 9.5.1
-- Cypress versão
-- Faker versão
-- cypress-localstorage-commands versão
+- Cypress versão 12.0.0
+- Faker versão 5.4.0
+- cypress-localstorage-commands versão 1.4.1
 
 # Como executar o projeto
 
