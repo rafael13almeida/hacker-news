@@ -4,7 +4,8 @@
   "description": "Projeto realizado como complemento do curso de Cypress avançado da escola Talking About Testing",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run"
+    "test": "cypress run",
+    "test:open": "cypress open"
   },
   "repository": {
     "type": "git",

@@ -5,7 +5,7 @@
 
 https://hackernews-seven.vercel.app/
 
-Os testes envolvidos nesta aplicação, são praticas aplicadas no curso avançado de Cypress idealizado pela escola [Talking About Testing](https://www.udemy.com/user/walmyr/ " Escola Talking About Testing")
+Os testes envolvidos nesta aplicação, são praticas aplicadas no curso avançado de Cypress idealizado pela escola [Talking About Testing](https://www.udemy.com/user/walmyr/ " Escola Talking About Testing").
 Hacker news é uma aplicação a qual faz o cache das buscas e tem páginação de 100 em 100 histórias. 
 No final do curso avançado de Cypress é passado um desafio de como seria testar está aplicação, inclusive como testar se o cache está funcionado. 
 
@@ -39,10 +39,13 @@ npx cypress run
 # Agradecimentos
 
 Gostaria de agradecer ao professor [Walmyr Filho](https://github.com/wlsf82 "Walmyr Filho") pelo conhecimento compartilhado. 
-Walmyr é referência em Cypress no Brasil e ajuda a comunidade com artigos em seu [blog](https://talkingabouttesting.com/), com vídeos no [youtube](https://www.youtube.com/@TalkingAboutTesting) e [cursos](https://www.udemy.com/user/walmyr/) de alto nível com preço bastante acessivel.
+Walmyr é referência em Cypress no Brasil e ajuda a comunidade com artigos em seu [blog](https://talkingabouttesting.com/), com vídeos no [youtube](https://www.youtube.com/@TalkingAboutTesting) e [cursos](https://www.udemy.com/user/walmyr/) de alto nível com preço bastante acessível.
 
 # Autor
 
 Rafael Almeida 
+
+Tester Jr do produto HCM Teknisa, louco por tecnologia e sede de aprendizado. 
+Pai da Olivia e da Elena, tutor de um dog (Laravel) e viciado em jogos do Galo. 
 
 https://www.linkedin.com/in/rafael13almeida/
