@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "test": "cypress run",
-    "test:open": "cypress open"
+    "test:open": "cypress open",
+    "lint": "npx standard",
+    "lint:fix": "npx standard --fix"
   },
   "repository": {
     "type": "git",
@@ -28,5 +30,8 @@
     "cypress-localstorage-commands": "^1.4.1",
     "faker": "^5.4.0",
     "standardjs": "^1.0.0-alpha"
+  },
+  "dependencies": {
+    "standard": "^17.1.0"
   }
 }

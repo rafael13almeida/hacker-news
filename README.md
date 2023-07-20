@@ -5,9 +5,9 @@
 
 https://hackernews-seven.vercel.app/
 
-Os testes envolvidos nesta aplicação, são praticas aplicadas no curso avançado de Cypress idealizado pela escola [Talking About Testing](https://www.udemy.com/user/walmyr/ " Escola Talking About Testing").
-Hacker news é uma aplicação a qual faz o cache das buscas e tem páginação de 100 em 100 histórias. 
-No final do curso avançado de Cypress é passado um desafio de como seria testar está aplicação, inclusive como testar se o cache está funcionado. 
+Os testes envolvidos nesta aplicação são praticas aplicadas do curso avançado de Cypress, idealizado pela escola [Talking About Testing](https://www.udemy.com/user/walmyr/ " Escola Talking About Testing").
+Hacker news é uma aplicação que faz o cache das buscas e tem páginação de 100 em 100 histórias. 
+No final do curso avançado de Cypress é proposto um desafio que consiste em testar esta aplicação, incluindo o teste de cache. 
 
 
 # Tecnologias utilizadas

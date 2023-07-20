@@ -1,0 +1,23 @@
+{
+    "hits" : [
+        {
+            "title" : "Exemplo de Teste 1",
+            "url" : "https://www.teste1.com.br",
+            "author" : "Autor 1",
+            "num_comments" : 26,
+            "points": 51,
+            "Id" : 0
+
+        },
+
+        {
+            "title" : "Exemplo de Teste 2",
+            "url" : "https://www.teste2.com.br",
+            "author" : "Autor 2",
+            "num_comments" : 99,
+            "points": 31,
+            "Id" : 1
+
+        }
+    ]
+}
