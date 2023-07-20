@@ -6,7 +6,7 @@
             "author" : "Autor 1",
             "num_comments" : 26,
             "points": 51,
-            "Id" : 0
+            "objectID" : 0
 
         },
 
@@ -16,7 +16,7 @@
             "author" : "Autor 2",
             "num_comments" : 99,
             "points": 31,
-            "Id" : 1
+            "objectID" : 1
 
         }
     ]
