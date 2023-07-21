@@ -13,20 +13,6 @@ describe('Hacker-news', () => {
         }
       }).as('getItens')
 
-      cy.intercept({
-        method: 'GET',
-        pathname: '**/search',
-        query: {
-          query: textoInicial,
-          page: '1'
-        }
-      }).as('getNovosItens')
-
-      cy.intercept(
-        'GET',
-        `search?query=${novoTexto}%20&page=0&**`
-      ).as('getItemDigitado')
-
       cy.visit('/')
       cy.wait('@getItens')
     })
@@ -55,25 +41,6 @@ describe('Hacker-news', () => {
         .should('have.length', 100)
     })
 
-    it.only('Verificar digitar novo texto e clicar em search', () => {
-      cy.busca(novoTexto)
-        .wait('@getItemDigitado')
-      cy.get('.table-row')
-        .should('have.length', 100)
-    })
-
-    it('Verifica quantidade de itens ao clicar no "More"', () => {
-      cy.get('.table-row')
-        .should('have.length', 100)
-      cy.get('.interactions button[type=button]')
-        .should('be.visible')
-        .click()
-        .wait('@getNovosItens')
-      cy.get('.table-row')
-        .should('have.length', 200)
-      cy.get('.interactions button[type=button]')
-        .should('be.visible')
-    })
   })
 
   context('Mock API', () => {
@@ -86,8 +53,40 @@ describe('Hacker-news', () => {
         { fixture: 'itens' }
       ).as('getItensFix')
 
+      cy.intercept(
+        'GET',
+        `search?query=${textoInicial}&page=1**`
+      ).as('getNovosItens')
+      
+      cy.intercept(
+        'GET',
+        `search?query=${textoInicial}&page=0**`
+      ).as('getItemDigitado')
+
       cy.visit('/')
       cy.wait('@getItensFix')
+    })
+
+    it('Verifica quantidade de itens ao clicar no "More"', () => {
+
+      cy.get('.table-row')
+        .should('have.length', 2)
+      cy.get('.interactions button[type=button]')
+        .should('be.visible')
+        .click()
+        .wait('@getNovosItens')
+      cy.get('.table-row')
+        .should('have.length', 102)
+      cy.get('.interactions button[type=button]')
+        .should('be.visible')
+    })
+
+    it('Verificar digitar novo texto e clicar em search', () => {
+      cy.busca(novoTexto)
+        .wait('@getItemDigitado')
+      cy.get('.table-row')
+        .should('have.length', 100)
+    
     })
 
     it('Verifica botão Dismiss', () => {
@@ -111,7 +110,7 @@ describe('Hacker-news', () => {
         cy.wait('@empty')
       })
       
-      it.only('Verifica o cache da aplicação', () => {
+      it('Verifica o cache da aplicação', () => {
 
         const faker = require('faker')
         const aleatorio = faker.random.word()
