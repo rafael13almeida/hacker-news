@@ -4,7 +4,7 @@
   "description": "Projeto realizado como complemento do curso de Cypress avançado da escola Talking About Testing",
   "main": "index.js",
   "scripts": {
-    "test": "cypress run",
+    "test": "cypress run --reporter nyan",
     "test:open": "cypress open",
     "lint": "npx standard",
     "lint:fix": "npx standard --fix"

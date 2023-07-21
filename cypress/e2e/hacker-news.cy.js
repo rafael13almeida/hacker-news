@@ -13,6 +13,15 @@ describe('Hacker-news', () => {
         }
       }).as('getItens')
 
+      cy.intercept({
+        method: 'GET',
+        pathname: '**/search',
+        query: {
+          query: textoInicial,
+          page: '1'
+        }
+      }).as('getNovosItens')
+
       cy.visit('/')
       cy.wait('@getItens')
     })
@@ -56,6 +65,7 @@ describe('Hacker-news', () => {
       cy.get('.interactions button[type=button]')
         .should('be.visible')
         .click()
+        .wait('@getNovosItens')
       cy.get('.table-row')
         .should('have.length', 200)
       cy.get('.interactions button[type=button]')
@@ -65,7 +75,7 @@ describe('Hacker-news', () => {
 
   context('Mock API', () => {
     const itens = require('../fixtures/itens')
-    
+
     beforeEach(() => {
       cy.intercept(
         'GET',
@@ -87,6 +97,48 @@ describe('Hacker-news', () => {
         .should('have.length', 1)
     })
 
+    context('Verifica o cache', () => {
+      beforeEach(() => {
+        cy.intercept(
+          `**/search?query=${textoInicial}&page=0**`,
+          { fixture : 'empty' }
+        ).as('empty')
+
+        cy.visit('/')
+        cy.wait('@empty')
+      })
+      
+      it('Verifica o cache da aplicação', () => {
+
+        const faker = require('faker')
+        const aleatorio = faker.random.word()
+        let count = 0
+
+        cy.intercept(`**/search?query=${aleatorio}**`, req => {
+          count +=1
+          req.reply({fixture: 'empty'})
+        }).as('random')
+
+        cy.intercept(
+          `**/search?query=${novoTexto}&page=0**`,
+          { fixture: 'itens' }
+        ).as('itens')
+
+        cy.busca(aleatorio).then(() => {
+          expect(count, `network calls to fetch ${aleatorio}`).to.equal(1)
+    
+          cy.wait('@random')
+    
+          cy.busca(novoTexto)
+          // cy.wait('@itens')
+    
+          cy.busca(aleatorio).then(() => {
+            expect(count, `network calls to fetch ${aleatorio}`).to.equal(1)
+          })
+        })
+      })
+    })
+
     context('Ordenação', () => {
       it('Verifica ordenação por título', () => {
         cy.get('.table-row')
@@ -97,16 +149,16 @@ describe('Hacker-news', () => {
           .and('contain', itens.hits[0].points)
         cy.get(`.table-row a:contains(${itens.hits[0].title})`)
           .should('have.attr', 'href', itens.hits[0].url)
-  
+
         cy.contains('button', 'Title').as('title')
           .should('be.visible')
           .click()
         cy.get('.button-active')
           .should('be.visible')
-  
-        cy.get('@title') 
+
+        cy.get('@title')
           .click()
-  
+
         cy.get('.table-row')
           .first()
           .should('contain', itens.hits[1].title)
@@ -126,16 +178,16 @@ describe('Hacker-news', () => {
           .and('contain', itens.hits[0].points)
         cy.get(`.table-row a:contains(${itens.hits[0].title})`)
           .should('have.attr', 'href', itens.hits[0].url)
-  
+
         cy.contains('button', 'Author').as('autor')
           .should('be.visible')
           .click()
         cy.get('.button-active')
           .should('be.visible')
-  
-        cy.get('@autor') 
+
+        cy.get('@autor')
           .click()
-  
+
         cy.get('.table-row')
           .first()
           .should('contain', itens.hits[1].title)
@@ -155,7 +207,7 @@ describe('Hacker-news', () => {
           .and('contain', itens.hits[0].points)
         cy.get(`.table-row a:contains(${itens.hits[0].title})`)
           .should('have.attr', 'href', itens.hits[0].url)
-  
+
         cy.contains('button', 'Comments').as('comentarios')
           .should('be.visible')
           .click()
@@ -181,16 +233,16 @@ describe('Hacker-news', () => {
           .and('contain', itens.hits[0].points)
         cy.get(`.table-row a:contains(${itens.hits[0].title})`)
           .should('have.attr', 'href', itens.hits[0].url)
-  
+
         cy.contains('button', 'Points').as('pontos')
           .should('be.visible')
           .click()
         cy.get('.button-active')
           .should('be.visible')
-  
-        cy.get('@pontos') 
+
+        cy.get('@pontos')
           .click()
-  
+
         cy.get('.table-row')
           .first()
           .should('contain', itens.hits[1].title)
@@ -201,6 +253,6 @@ describe('Hacker-news', () => {
           .should('have.attr', 'href', itens.hits[1].url)
       })
     })
-   
+
   })
 })
