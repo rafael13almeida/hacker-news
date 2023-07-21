@@ -22,6 +22,11 @@ describe('Hacker-news', () => {
         }
       }).as('getNovosItens')
 
+      cy.intercept(
+        'GET',
+        `search?query=${novoTexto}%20&page=0&**`
+      ).as('getItemDigitado')
+
       cy.visit('/')
       cy.wait('@getItens')
     })
@@ -50,11 +55,9 @@ describe('Hacker-news', () => {
         .should('have.length', 100)
     })
 
-    it('Verificar digitar novo texto e clicar em search', () => {
-      cy.get('.interactions input[type="text"]')
-        .should('be.visible')
-        .clear()
-        .type(`${novoTexto} {enter}`)
+    it.only('Verificar digitar novo texto e clicar em search', () => {
+      cy.busca(novoTexto)
+        .wait('@getItemDigitado')
       cy.get('.table-row')
         .should('have.length', 100)
     })
@@ -108,7 +111,7 @@ describe('Hacker-news', () => {
         cy.wait('@empty')
       })
       
-      it('Verifica o cache da aplicação', () => {
+      it.only('Verifica o cache da aplicação', () => {
 
         const faker = require('faker')
         const aleatorio = faker.random.word()
@@ -120,20 +123,20 @@ describe('Hacker-news', () => {
         }).as('random')
 
         cy.intercept(
-          `**/search?query=${novoTexto}&page=0**`,
+          `**/search?query=${novoTexto}**`,
           { fixture: 'itens' }
         ).as('itens')
 
         cy.busca(aleatorio).then(() => {
-          expect(count, `network calls to fetch ${aleatorio}`).to.equal(1)
+          expect(count, `chamada para ${aleatorio}`).to.equal(1)
     
           cy.wait('@random')
     
           cy.busca(novoTexto)
-          // cy.wait('@itens')
+          cy.wait('@itens')
     
           cy.busca(aleatorio).then(() => {
-            expect(count, `network calls to fetch ${aleatorio}`).to.equal(1)
+            expect(count, `chamada para ${aleatorio}`).to.equal(1)
           })
         })
       })
