@@ -273,7 +273,7 @@ context('Erro', () => {
     cy.intercept(
       'GET',
       '**/search**',
-      { forceNetworkError : true}
+      { forceNetworkError: true }
     ).as('getErroReq')
 
     cy.visit('/')
@@ -284,14 +284,13 @@ context('Erro', () => {
 })
 
 context('Delay', () => {
-
   it('Verifica quando existe delay na requisição', () => {
     cy.intercept(
       'GET',
       '**/search**',
-      { 
-        delay : 1000,
-        fixture : 'itens'
+      {
+        delay: 1000,
+        fixture: 'itens'
       }
     ).as('getDelayItens')
 
@@ -301,9 +300,8 @@ context('Delay', () => {
     cy.wait('@getDelayItens')
     cy.contains('Loading ...')
       .should('not.exist')
- 
+
     cy.get('.table-row')
       .should('have.length', 2)
   })
-  
 })
