@@ -40,7 +40,6 @@ describe('Hacker-news', () => {
       cy.get('.table-row')
         .should('have.length', 100)
     })
-
   })
 
   context('Mock API', () => {
@@ -57,7 +56,7 @@ describe('Hacker-news', () => {
         'GET',
         `search?query=${textoInicial}&page=1**`
       ).as('getNovosItens')
-      
+
       cy.intercept(
         'GET',
         `search?query=${textoInicial}&page=0**`
@@ -68,7 +67,6 @@ describe('Hacker-news', () => {
     })
 
     it('Verifica quantidade de itens ao clicar no "More"', () => {
-
       cy.get('.table-row')
         .should('have.length', 2)
       cy.get('.interactions button[type=button]')
@@ -86,7 +84,6 @@ describe('Hacker-news', () => {
         .wait('@getItemDigitado')
       cy.get('.table-row')
         .should('have.length', 100)
-    
     })
 
     it('Verifica botão Dismiss', () => {
@@ -103,22 +100,21 @@ describe('Hacker-news', () => {
       beforeEach(() => {
         cy.intercept(
           `**/search?query=${textoInicial}&page=0**`,
-          { fixture : 'empty' }
+          { fixture: 'empty' }
         ).as('empty')
 
         cy.visit('/')
         cy.wait('@empty')
       })
-      
-      it('Verifica o cache da aplicação', () => {
 
+      it('Verifica o cache da aplicação', () => {
         const faker = require('faker')
         const aleatorio = faker.random.word()
         let count = 0
 
         cy.intercept(`**/search?query=${aleatorio}**`, req => {
-          count +=1
-          req.reply({fixture: 'empty'})
+          count += 1
+          req.reply({ fixture: 'empty' })
         }).as('random')
 
         cy.intercept(
@@ -128,12 +124,12 @@ describe('Hacker-news', () => {
 
         cy.busca(aleatorio).then(() => {
           expect(count, `chamada para ${aleatorio}`).to.equal(1)
-    
+
           cy.wait('@random')
-    
+
           cy.busca(novoTexto)
           cy.wait('@itens')
-    
+
           cy.busca(aleatorio).then(() => {
             expect(count, `chamada para ${aleatorio}`).to.equal(1)
           })
@@ -255,34 +251,59 @@ describe('Hacker-news', () => {
           .should('have.attr', 'href', itens.hits[1].url)
       })
     })
-
   })
 })
 
 context('Erro', () => {
-  
-  beforeEach(() => {
+  it('Verifica quando existe erro no servidor', () => {
     cy.intercept(
       'GET',
       '**/search**',
-      {
-        delay: 1000,
-        fixture: 'itens'
-      }
-    ).as('getDelayItens')
+      { forceNetworkError: 500 }
+    ).as('getErroServidor')
+
     cy.visit('/')
- 
+
+    cy.wait('@getErroServidor')
+    cy.contains('p', 'Something went wrong.')
+      .should('be.visible')
   })
 
-  it.only('Verifica quando existe delay na requisição', () => {
-    
+  it('Verifica quando existe erro na requisição', () => {
+    cy.intercept(
+      'GET',
+      '**/search**',
+      { forceNetworkError : true}
+    ).as('getErroReq')
+
+    cy.visit('/')
+    cy.wait('@getErroReq')
+    cy.contains('p', 'Something went wrong.')
+      .should('be.visible')
+  })
+})
+
+context('Delay', () => {
+
+  it('Verifica quando existe delay na requisição', () => {
+    cy.intercept(
+      'GET',
+      '**/search**',
+      { 
+        delay : 1000,
+        fixture : 'itens'
+      }
+    ).as('getDelayItens')
+
+    cy.visit('/')
     cy.contains('Loading ...')
       .should('be.visible')
     cy.wait('@getDelayItens')
     cy.contains('Loading ...')
       .should('not.exist')
+ 
     cy.get('.table-row')
       .should('have.length', 2)
-      
   })
+  
 })
