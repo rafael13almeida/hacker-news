@@ -258,3 +258,31 @@ describe('Hacker-news', () => {
 
   })
 })
+
+context('Erro', () => {
+  
+  beforeEach(() => {
+    cy.intercept(
+      'GET',
+      '**/search**',
+      {
+        delay: 1000,
+        fixture: 'itens'
+      }
+    ).as('getDelayItens')
+    cy.visit('/')
+ 
+  })
+
+  it.only('Verifica quando existe delay na requisição', () => {
+    
+    cy.contains('Loading ...')
+      .should('be.visible')
+    cy.wait('@getDelayItens')
+    cy.contains('Loading ...')
+      .should('not.exist')
+    cy.get('.table-row')
+      .should('have.length', 2)
+      
+  })
+})
